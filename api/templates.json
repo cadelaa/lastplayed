@@ -1,9 +1,9 @@
 {
-    "current-theme": "ascii",
+    "current-theme": "custom",
     "templates": {
         "light": "spotify.html.j2",
         "dark": "spotify-dark.html.j2",
         "base": "base.html.j2",
-        "ascii": "ascii.html.j2"
+        "custom": "custom.html.j2"
     }
 }
