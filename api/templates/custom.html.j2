@@ -58,11 +58,16 @@
                     z-index: 1;
                     display: flex;
                     align-items: center;
-                    height: calc(100% - 18px);
+                    height: 100%;
                     gap: 12px;
                 }
-
-                .art { flex-shrink: 0; }
+                
+                .art {
+                    flex-shrink: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
 
                 .cover {
                     width: {{ album_size }}px;
