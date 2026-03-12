@@ -38,18 +38,16 @@
                     background-color: #0d1117;
                     border: 2px solid #3d444d;
                     border-radius: 4px;
-                    padding: 16px;
                     overflow: hidden;
+                    padding: 0;
                 }
 
-                .header {
+                .inner {
                     position: relative;
-                    z-index: 2;
-                    font-size: 9px;
-                    color: #888888;
-                    letter-spacing: 2px;
-                    text-transform: uppercase;
-                    font-family: 'Courier New', Courier, monospace;
+                    width: 100%;
+                    height: 100%;
+                    padding: 12px;
+                    box-sizing: border-box;
                 }
 
                 .main {
@@ -60,7 +58,7 @@
                     height: 100%;
                     gap: 12px;
                 }
-                
+
                 .art {
                     flex-shrink: 0;
                     display: flex;
@@ -75,7 +73,6 @@
                     object-fit: cover;
                     filter: grayscale(100%) contrast(1.1);
                     border: 2px solid #3d444d;
-                    opacity: 1;
                 }
 
                 .content {
@@ -149,49 +146,51 @@
                 a { text-decoration: none; display: block; }
             </style>
 
-            <div class="main">
-                <a class="art" href="{{ song_uri }}" target="_blank">
-                    <img src="data:image/png;base64,{{ image }}" class="cover" alt="Album art" />
-                </a>
-
-                <div class="content">
-                    <div class="status">Now playing</div>
-
-                    <a href="{{ song_uri }}" target="_blank">
-                        <div class="song {% if song_marquee.enabled %}has-marquee{% endif %}">
-                            {% if song_marquee.enabled %}
-                            <span class="marquee-track" style="--scroll-duration: {{ song_marquee.duration }}s;">
-                                <span class="song-text">{{ song_name }}</span>
-                                <span class="marquee-spacer"></span>
-                                <span class="song-text">{{ song_name }}</span>
-                                <span class="marquee-spacer"></span>
-                                <span class="song-text">{{ song_name }}</span>
-                                <span class="marquee-spacer"></span>
-                            </span>
-                            {% else %}
-                            <span class="song-text">{{ song_name }}</span>
-                            {% endif %}
-                        </div>
+            <div class="inner">
+                <div class="main">
+                    <a class="art" href="{{ song_uri }}" target="_blank">
+                        <img src="data:image/png;base64,{{ image }}" class="cover" alt="Album art" />
                     </a>
 
-                    <a href="{{ artist_uri }}" target="_blank">
-                        <div class="artist {% if artist_marquee.enabled %}has-marquee{% endif %}">
-                            {% if artist_marquee.enabled %}
-                            <span class="marquee-track" style="--scroll-duration: {{ artist_marquee.duration }}s;">
-                                <span class="artist-text">{{ artist_name }}</span>
-                                <span class="marquee-spacer"></span>
-                                <span class="artist-text">{{ artist_name }}</span>
-                                <span class="marquee-spacer"></span>
-                                <span class="artist-text">{{ artist_name }}</span>
-                                <span class="marquee-spacer"></span>
-                            </span>
-                            {% else %}
-                            <span class="artist-text">{{ artist_name }}</span>
-                            {% endif %}
-                        </div>
-                    </a>
+                    <div class="content">
+                        <div class="status">Now playing</div>
 
-                    <div id="bars-spacer"></div>
+                        <a href="{{ song_uri }}" target="_blank">
+                            <div class="song {% if song_marquee.enabled %}has-marquee{% endif %}">
+                                {% if song_marquee.enabled %}
+                                <span class="marquee-track" style="--scroll-duration: {{ song_marquee.duration }}s;">
+                                    <span class="song-text">{{ song_name }}</span>
+                                    <span class="marquee-spacer"></span>
+                                    <span class="song-text">{{ song_name }}</span>
+                                    <span class="marquee-spacer"></span>
+                                    <span class="song-text">{{ song_name }}</span>
+                                    <span class="marquee-spacer"></span>
+                                </span>
+                                {% else %}
+                                <span class="song-text">{{ song_name }}</span>
+                                {% endif %}
+                            </div>
+                        </a>
+
+                        <a href="{{ artist_uri }}" target="_blank">
+                            <div class="artist {% if artist_marquee.enabled %}has-marquee{% endif %}">
+                                {% if artist_marquee.enabled %}
+                                <span class="marquee-track" style="--scroll-duration: {{ artist_marquee.duration }}s;">
+                                    <span class="artist-text">{{ artist_name }}</span>
+                                    <span class="marquee-spacer"></span>
+                                    <span class="artist-text">{{ artist_name }}</span>
+                                    <span class="marquee-spacer"></span>
+                                    <span class="artist-text">{{ artist_name }}</span>
+                                    <span class="marquee-spacer"></span>
+                                </span>
+                                {% else %}
+                                <span class="artist-text">{{ artist_name }}</span>
+                                {% endif %}
+                            </div>
+                        </a>
+
+                        <div id="bars-spacer"></div>
+                    </div>
                 </div>
             </div>
         </div>
