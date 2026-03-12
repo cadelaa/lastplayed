@@ -1,14 +1,14 @@
 {
   "builds": [
     {
-      "src": "start.py",
+      "src": "api/orchestrator.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "start.py"
+      "dest": "api/orchestrator.py"
     }
   ]
 }
