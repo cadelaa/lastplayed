@@ -1,1 +1,237 @@
 
+<svg 
+    viewBox="0 0 {{ width }} {{ height }}" 
+    preserveAspectRatio="xMidYMid meet" 
+    style="width: 100%; height: auto; display: block; max-width: {{ width }}px;"
+    xmlns="http://www.w3.org/2000/svg" 
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <style>
+        .bar {
+            opacity: 0.85;
+            transform-box: fill-box;
+            transform-origin: center bottom;
+            animation-name: pulse, barcolor;
+            animation-iteration-count: infinite, infinite;
+            animation-direction: alternate, normal;
+            animation-timing-function: ease-out, linear;
+        }
+
+        @keyframes pulse {
+            0%   { transform: scaleY(0.30); }
+            100% { transform: scaleY(1); }
+        }
+
+        {{ bar_css | safe }}
+    </style>
+
+    <foreignObject width="{{ width }}" height="{{ height }}" x="0" y="0">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="container">
+            <style>
+                :root {
+                    --beat-duration: {{ beat_duration_ms }}ms;
+                }
+
+                * { box-sizing: border-box; margin: 0; padding: 0; }
+
+                div {
+                    font-family: 'Courier New', Courier, monospace;
+                }
+
+                .container {
+                    position: relative;
+                    width: 100%;
+                    height: 100%;
+                    background-color: #0a0a0a;
+                    border: 1px solid #00ff41;
+                    border-radius: 3px;
+                    padding: 8px 10px;
+                    overflow: hidden;
+                    box-shadow: 0 0 10px rgba(0, 255, 65, 0.2), inset 0 0 30px rgba(0,0,0,0.5);
+                }
+
+                .container::after {
+                    content: '';
+                    position: absolute;
+                    top: 0; left: 0; right: 0; bottom: 0;
+                    background: repeating-linear-gradient(
+                        0deg,
+                        transparent,
+                        transparent 2px,
+                        rgba(0, 0, 0, 0.08) 2px,
+                        rgba(0, 0, 0, 0.08) 4px
+                    );
+                    pointer-events: none;
+                    z-index: 10;
+                }
+
+                .header {
+                    font-size: 9px;
+                    color: #00ff41;
+                    opacity: 0.5;
+                    letter-spacing: 1px;
+                    margin-bottom: 4px;
+                    text-transform: uppercase;
+                }
+
+                .main {
+                    position: relative;
+                    z-index: 1;
+                    display: flex;
+                    align-items: center;
+                    height: calc(100% - 16px);
+                    gap: 10px;
+                }
+
+                .art { flex-shrink: 0; position: relative; }
+
+                .cover {
+                    width: {{ album_size }}px;
+                    height: {{ album_size }}px;
+                    border-radius: 2px;
+                    object-fit: cover;
+                    filter: saturate(0.3) brightness(0.8) sepia(0.3) hue-rotate(85deg);
+                    border: 1px solid #00ff41;
+                    opacity: 0.85;
+                }
+
+                .art::before, .art::after {
+                    content: '+';
+                    position: absolute;
+                    color: #00ff41;
+                    font-size: 10px;
+                    font-family: 'Courier New', monospace;
+                    z-index: 2;
+                }
+                .art::before { top: -4px; left: -4px; }
+                .art::after  { bottom: -4px; right: -4px; }
+
+                .content {
+                    flex: 1;
+                    min-width: 0;
+                    overflow: hidden;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                }
+
+                .status {
+                    font-size: 9px;
+                    color: #00ff41;
+                    opacity: 0.55;
+                    letter-spacing: 2px;
+                    text-transform: uppercase;
+                    margin-bottom: 3px;
+                }
+
+                .status::before {
+                    content: '> ';
+                    animation: blink 1s step-end infinite;
+                }
+
+                @keyframes blink {
+                    0%, 100% { opacity: 0.8; }
+                    50% { opacity: 0; }
+                }
+
+                .song, .artist { width: 100%; overflow: hidden; white-space: nowrap; }
+
+                .song-text {
+                    display: inline-block;
+                    white-space: nowrap;
+                    font-size: {{ song_font_size }}px;
+                    font-weight: bold;
+                    color: #00ff41;
+                    text-shadow: 0 0 8px rgba(0, 255, 65, 0.8), 0 0 20px rgba(0, 255, 65, 0.4);
+                    letter-spacing: 1px;
+                }
+
+                .artist-text {
+                    display: inline-block;
+                    white-space: nowrap;
+                    font-size: {{ artist_font_size }}px;
+                    color: #00cc33;
+                    opacity: 0.75;
+                    letter-spacing: 1px;
+                }
+
+                .artist { margin-top: {{ artist_margin_top }}px; }
+
+                .marquee-track {
+                    display: flex;
+                    white-space: nowrap;
+                    width: max-content;
+                    animation: marquee var(--scroll-duration) linear infinite;
+                }
+
+                .marquee-spacer { flex-shrink: 0; width: 50px; }
+
+                @keyframes marquee {
+                    0%   { transform: translateX(0); }
+                    100% { transform: translateX(-33.333%); }
+                }
+
+                #bars-spacer {
+                    height: {{ eq_spacer_height }}px;
+                    margin-top: {{ eq_spacer_margin_top }}px;
+                    width: 100%;
+                }
+
+                a { text-decoration: none; display: block; }
+            </style>
+
+            <div class="header">// now playing //</div>
+
+            <div class="main">
+                <a class="art" href="{{ song_uri }}" target="_blank">
+                    <img src="data:image/png;base64,{{ image }}" class="cover" alt="Album art" />
+                </a>
+
+                <div class="content">
+                    <div class="status">now playing</div>
+
+                    <a href="{{ song_uri }}" target="_blank">
+                        <div class="song {% if song_marquee.enabled %}has-marquee{% endif %}">
+                            {% if song_marquee.enabled %}
+                            <span class="marquee-track" style="--scroll-duration: {{ song_marquee.duration }}s;">
+                                <span class="song-text">{{ song_name }}</span>
+                                <span class="marquee-spacer"></span>
+                                <span class="song-text">{{ song_name }}</span>
+                                <span class="marquee-spacer"></span>
+                                <span class="song-text">{{ song_name }}</span>
+                                <span class="marquee-spacer"></span>
+                            </span>
+                            {% else %}
+                            <span class="song-text">{{ song_name }}</span>
+                            {% endif %}
+                        </div>
+                    </a>
+
+                    <a href="{{ artist_uri }}" target="_blank">
+                        <div class="artist {% if artist_marquee.enabled %}has-marquee{% endif %}">
+                            {% if artist_marquee.enabled %}
+                            <span class="marquee-track" style="--scroll-duration: {{ artist_marquee.duration }}s;">
+                                <span class="artist-text">{{ artist_name }}</span>
+                                <span class="marquee-spacer"></span>
+                                <span class="artist-text">{{ artist_name }}</span>
+                                <span class="marquee-spacer"></span>
+                                <span class="artist-text">{{ artist_name }}</span>
+                                <span class="marquee-spacer"></span>
+                            </span>
+                            {% else %}
+                            <span class="artist-text">{{ artist_name }}</span>
+                            {% endif %}
+                        </div>
+                    </a>
+
+                    <div id="bars-spacer"></div>
+                </div>
+            </div>
+
+        </div>
+    </foreignObject>
+
+    <g id="bars" style="filter: drop-shadow(0 0 3px rgba(0,255,65,0.6));">
+        {{ bar_svg | safe }}
+    </g>
+</svg>
