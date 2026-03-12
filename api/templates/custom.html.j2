@@ -146,14 +146,13 @@
                 a { text-decoration: none; display: block; }
             </style>
 
-            <div class="header">now playing</div>
-
             <div class="main">
                 <a class="art" href="{{ song_uri }}" target="_blank">
                     <img src="data:image/png;base64,{{ image }}" class="cover" alt="Album art" />
                 </a>
 
                 <div class="content">
+                    <div class="header">now playing</div>
                     <div class="status">track</div>
 
                     <a href="{{ song_uri }}" target="_blank">
