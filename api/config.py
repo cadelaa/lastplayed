@@ -69,8 +69,8 @@ class SVGConfig:
 
     # Dimensions
     width: int = 540
-    height: int = 135
-    album_art_size: int = 121
+    height: int = 150
+    album_art_size: int = 106
     border_radius: int = 5
 
     # Widget container layout (injected into CSS via template variables)
